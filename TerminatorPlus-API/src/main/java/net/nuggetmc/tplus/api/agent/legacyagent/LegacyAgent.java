@@ -53,7 +53,7 @@ public class LegacyAgent extends Agent {
     private final Map<Block, Short> crackList = new HashMap<>();
     private final Map<BukkitRunnable, Byte> mining = new HashMap<>();
     private final Set<Terminator> fallDamageCooldown = new HashSet<>();
-    private final Set<Terminator> bowCooldown = new HashSet<>();
+    // private final Set<Terminator> bowCooldown = new HashSet<>();
     public boolean offsets = true;
     private List<LivingEntity> botsInPlayerList;
     private EnumTargetGoal goal;
@@ -572,13 +572,13 @@ public class LegacyAgent extends Agent {
         bot.addVelocity(vector);
 
         // Attempt ranged attack while swimming if target is visible and far
-        if (bot.tickDelay(3) && distance >= 4 && distance <= 32) {
-            Location botEyeLoc = playerNPC.getEyeLocation();
-            Location playerEyeLoc = target.getEyeLocation();
-            if (LegacyUtils.checkFreeSpace(botEyeLoc, playerEyeLoc)) {
-                attack(bot, target, at);
-            }
-        }
+        // if (bot.tickDelay(3) && distance >= 4 && distance <= 32) {
+        //     Location botEyeLoc = playerNPC.getEyeLocation();
+        //     Location playerEyeLoc = target.getEyeLocation();
+        //     if (LegacyUtils.checkFreeSpace(botEyeLoc, playerEyeLoc)) {
+        //         attack(bot, target, at);
+        //     }
+        // }
     }
 
     private void stopMining(Terminator bot) {
@@ -1530,14 +1530,14 @@ public class LegacyAgent extends Agent {
         double distance = loc.distance(target.getLocation());
 
         // Ranged attack with bow when target is far away
-        if (distance >= 4 && distance <= 32 && !bowCooldown.contains(bot)) {
-            bowCooldown.add(bot);
-            bot.faceLocation(target.getLocation());
-            bot.shootBow(target);
-
-            scheduler.runTaskLater(plugin, () -> bowCooldown.remove(bot), 20);
-            return;
-        }
+        // if (distance >= 4 && distance <= 32 && !bowCooldown.contains(bot)) {
+        //     bowCooldown.add(bot);
+        //     bot.faceLocation(target.getLocation());
+        //     bot.shootBow(target);
+        //
+        //     scheduler.runTaskLater(plugin, () -> bowCooldown.remove(bot), 20);
+        //     return;
+        // }
 
         // Melee attack
         if (target.getNoDamageTicks() >= 5 || distance >= 4)
