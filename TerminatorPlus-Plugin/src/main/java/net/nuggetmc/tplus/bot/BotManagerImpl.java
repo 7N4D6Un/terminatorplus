@@ -36,8 +36,8 @@ public class BotManagerImpl implements BotManager, Listener {
     private final NumberFormat numberFormat;
 
     public boolean joinMessages = false;
-    private boolean mobTarget = false;
-    private boolean addPlayerList = false;
+    private boolean mobTarget = true;
+    private boolean addPlayerList = true;
 
     public BotManagerImpl() {
         this.agent = new LegacyAgent(this, TerminatorPlus.getInstance());
