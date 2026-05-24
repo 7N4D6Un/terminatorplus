@@ -1540,7 +1540,7 @@ public class LegacyAgent extends Agent {
         // }
 
         // Melee attack
-        if (target.getNoDamageTicks() >= 5 || distance >= 4)
+        if (target.getNoDamageTicks() >= 5 || distance > 3)
             return;
 
         bot.attack(target);
