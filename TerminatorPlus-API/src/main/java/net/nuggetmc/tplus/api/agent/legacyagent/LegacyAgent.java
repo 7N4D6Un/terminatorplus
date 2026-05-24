@@ -107,88 +107,88 @@ public class LegacyAgent extends Agent {
         btList.put(botEntity, loc);
     }
 
-    /**
-     * Auto-equip: bots automatically upgrade their weapons and armor over time.
-     * The upgrade tier increases based on how long the bot has been alive.
-     */
-    private void autoEquip(Terminator bot) {
-        int ticks = bot.getAliveTicks();
-        LivingEntity botEntity = bot.getBukkitEntity();
-        if (!(botEntity instanceof Player botPlayer)) return;
-
-        // Weapon upgrade tiers based on alive time
-        Material weapon;
-        Material helmet, chestplate, leggings, boots;
-
-        if (ticks > 6000) {
-            // After 5 minutes: diamond gear
-            weapon = Material.DIAMOND_SWORD;
-            helmet = Material.DIAMOND_HELMET;
-            chestplate = Material.DIAMOND_CHESTPLATE;
-            leggings = Material.DIAMOND_LEGGINGS;
-            boots = Material.DIAMOND_BOOTS;
-        } else if (ticks > 3600) {
-            // After 3 minutes: iron gear
-            weapon = Material.IRON_SWORD;
-            helmet = Material.IRON_HELMET;
-            chestplate = Material.IRON_CHESTPLATE;
-            leggings = Material.IRON_LEGGINGS;
-            boots = Material.IRON_BOOTS;
-        } else if (ticks > 1200) {
-            // After 1 minute: stone sword, leather armor
-            weapon = Material.STONE_SWORD;
-            helmet = Material.LEATHER_HELMET;
-            chestplate = Material.LEATHER_CHESTPLATE;
-            leggings = Material.LEATHER_LEGGINGS;
-            boots = Material.LEATHER_BOOTS;
-        } else {
-            return;
-        }
-
-        // Only upgrade weapon if current one is weaker
-        double currentDamage = net.nuggetmc.tplus.api.utils.ItemUtils.getLegacyAttackDamage(bot.getBukkitEntity().getEquipment().getItemInMainHand());
-        double newDamage = net.nuggetmc.tplus.api.utils.ItemUtils.getLegacyAttackDamage(new ItemStack(weapon));
-        if (newDamage > currentDamage) {
-            bot.setDefaultItem(new ItemStack(weapon));
-        }
-
-        // Upgrade armor - compare tiers and upgrade if new tier is better
-        ItemStack[] currentArmor = botPlayer.getInventory().getArmorContents();
-        ItemStack[] newArmor = new ItemStack[]{
-                new ItemStack(boots),
-                new ItemStack(leggings),
-                new ItemStack(chestplate),
-                new ItemStack(helmet)
-        };
-
-        boolean needsUpgrade = false;
-        for (int i = 0; i < 4; i++) {
-            if (currentArmor[i] == null || currentArmor[i].getType() == Material.AIR
-                    || getArmorTier(currentArmor[i].getType()) < getArmorTier(newArmor[i].getType())) {
-                needsUpgrade = true;
-                break;
-            }
-        }
-
-        if (needsUpgrade) {
-            botPlayer.getInventory().setArmorContents(newArmor);
-            bot.setItem(newArmor[0], org.bukkit.inventory.EquipmentSlot.FEET);
-            bot.setItem(newArmor[1], org.bukkit.inventory.EquipmentSlot.LEGS);
-            bot.setItem(newArmor[2], org.bukkit.inventory.EquipmentSlot.CHEST);
-            bot.setItem(newArmor[3], org.bukkit.inventory.EquipmentSlot.HEAD);
-        }
-    }
-
-    private static int getArmorTier(Material mat) {
-        String name = mat.name();
-        if (name.startsWith("NETHERITE_")) return 5;
-        if (name.startsWith("DIAMOND_")) return 4;
-        if (name.startsWith("IRON_")) return 3;
-        if (name.startsWith("CHAINMAIL_")) return 2;
-        if (name.startsWith("GOLDEN_")) return 1;
-        if (name.startsWith("LEATHER_")) return 1;
-        return 0;
-    }
+    // /**
+    //  * Auto-equip: bots automatically upgrade their weapons and armor over time.
+    //  * The upgrade tier increases based on how long the bot has been alive.
+    //  */
+    // private void autoEquip(Terminator bot) {
+    //     int ticks = bot.getAliveTicks();
+    //     LivingEntity botEntity = bot.getBukkitEntity();
+    //     if (!(botEntity instanceof Player botPlayer)) return;
+    //
+    //     // Weapon upgrade tiers based on alive time
+    //     Material weapon;
+    //     Material helmet, chestplate, leggings, boots;
+    //
+    //     if (ticks > 6000) {
+    //         // After 5 minutes: diamond gear
+    //         weapon = Material.DIAMOND_SWORD;
+    //         helmet = Material.DIAMOND_HELMET;
+    //         chestplate = Material.DIAMOND_CHESTPLATE;
+    //         leggings = Material.DIAMOND_LEGGINGS;
+    //         boots = Material.DIAMOND_BOOTS;
+    //     } else if (ticks > 3600) {
+    //         // After 3 minutes: iron gear
+    //         weapon = Material.IRON_SWORD;
+    //         helmet = Material.IRON_HELMET;
+    //         chestplate = Material.IRON_CHESTPLATE;
+    //         leggings = Material.IRON_LEGGINGS;
+    //         boots = Material.IRON_BOOTS;
+    //     } else if (ticks > 1200) {
+    //         // After 1 minute: stone sword, leather armor
+    //         weapon = Material.STONE_SWORD;
+    //         helmet = Material.LEATHER_HELMET;
+    //         chestplate = Material.LEATHER_CHESTPLATE;
+    //         leggings = Material.LEATHER_LEGGINGS;
+    //         boots = Material.LEATHER_BOOTS;
+    //     } else {
+    //         return;
+    //     }
+    //
+    //     // Only upgrade weapon if current one is weaker
+    //     double currentDamage = net.nuggetmc.tplus.api.utils.ItemUtils.getLegacyAttackDamage(bot.getBukkitEntity().getEquipment().getItemInMainHand());
+    //     double newDamage = net.nuggetmc.tplus.api.utils.ItemUtils.getLegacyAttackDamage(new ItemStack(weapon));
+    //     if (newDamage > currentDamage) {
+    //         bot.setDefaultItem(new ItemStack(weapon));
+    //     }
+    //
+    //     // Upgrade armor - compare tiers and upgrade if new tier is better
+    //     ItemStack[] currentArmor = botPlayer.getInventory().getArmorContents();
+    //     ItemStack[] newArmor = new ItemStack[]{
+    //             new ItemStack(boots),
+    //             new ItemStack(leggings),
+    //             new ItemStack(chestplate),
+    //             new ItemStack(helmet)
+    //     };
+    //
+    //     boolean needsUpgrade = false;
+    //     for (int i = 0; i < 4; i++) {
+    //         if (currentArmor[i] == null || currentArmor[i].getType() == Material.AIR
+    //                 || getArmorTier(currentArmor[i].getType()) < getArmorTier(newArmor[i].getType())) {
+    //             needsUpgrade = true;
+    //             break;
+    //         }
+    //     }
+    //
+    //     if (needsUpgrade) {
+    //         botPlayer.getInventory().setArmorContents(newArmor);
+    //         bot.setItem(newArmor[0], org.bukkit.inventory.EquipmentSlot.FEET);
+    //         bot.setItem(newArmor[1], org.bukkit.inventory.EquipmentSlot.LEGS);
+    //         bot.setItem(newArmor[2], org.bukkit.inventory.EquipmentSlot.CHEST);
+    //         bot.setItem(newArmor[3], org.bukkit.inventory.EquipmentSlot.HEAD);
+    //     }
+    // }
+    //
+    // private static int getArmorTier(Material mat) {
+    //     String name = mat.name();
+    //     if (name.startsWith("NETHERITE_")) return 5;
+    //     if (name.startsWith("DIAMOND_")) return 4;
+    //     if (name.startsWith("IRON_")) return 3;
+    //     if (name.startsWith("CHAINMAIL_")) return 2;
+    //     if (name.startsWith("GOLDEN_")) return 1;
+    //     if (name.startsWith("LEATHER_")) return 1;
+    //     return 0;
+    // }
 
     private void tickBot(Terminator bot) {
         if (!bot.isBotAlive()) {
@@ -199,10 +199,10 @@ public class LegacyAgent extends Agent {
             center(bot);
         }
 
-        // Auto-equip: periodically upgrade equipment
-        if (bot.tickDelay(100)) {
-            autoEquip(bot);
-        }
+        // // Auto-equip: periodically upgrade equipment
+        // if (bot.tickDelay(100)) {
+        //     autoEquip(bot);
+        // }
 
         Location loc = bot.getLocation();
         LivingEntity livingTarget = locateTarget(bot, loc);
