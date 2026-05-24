@@ -167,7 +167,7 @@ public class BotManagerImpl implements BotManager, Listener {
             if (network != null) {
                 bot.setNeuralNetwork(network == NeuralNetwork.RANDOM ? NeuralNetwork.generateRandomNetwork() : network);
                 bot.setShield(true);
-                bot.setDefaultItem(new ItemStack(Material.WOODEN_AXE));
+                bot.setDefaultItem(new ItemStack(Material.STONE_AXE));
                 //bot.setRemoveOnDeath(false);
             }
 
